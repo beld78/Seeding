@@ -1,6 +1,5 @@
 package gui;
 
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,15 +7,21 @@ public class Logic {
 
 	List<String[]> groupsList = new LinkedList<>();
 	List<String> participants = new LinkedList<>();
-	
 
 	String textToConvertArray[];
 	int personsInGroup;
 	int amountOfGroups;
-	
-	
-	
-	
+
+	public void syso() {
+
+		for (int i = 0; i < groupsList.size(); i++) {
+			for (int z = 0; z < groupsList.get(i).length; z++) {
+
+				System.out.println(groupsList.get(i)[z]);
+			}
+		}
+	}
+
 	public String format() {
 
 		createGroups(amountOfGroups, personsInGroup);
@@ -27,7 +32,9 @@ public class Logic {
 
 	private String writeInResultList() {
 		String result = "";
+		// first for loop goes through the group numbers
 		for (int i = 0; i < groupsList.size(); i++) {
+			// second for loop goes through a single group
 			for (int z = 0; z < groupsList.get(i).length; z++) {
 				String currentLine = groupsList.get(i)[z];
 				int removeNumber = currentLine.indexOf(".");
@@ -78,34 +85,43 @@ public class Logic {
 			groupsList.add(temp);
 		}
 	}
-	
+
 	public List<String[]> getGroupsList() {
 		return groupsList;
 	}
+
 	public void setGroupsList(List<String[]> groupsList) {
 		this.groupsList = groupsList;
 	}
+
 	public List<String> getParticipants() {
 		return participants;
 	}
+
 	public void setParticipants(List<String> participants) {
 		this.participants = participants;
 	}
+
 	public String[] getTextToConvertArray() {
 		return textToConvertArray;
 	}
+
 	public void setTextToConvertArray(String[] textToConvertArray) {
 		this.textToConvertArray = textToConvertArray;
 	}
+
 	public int getPersonsInGroup() {
 		return personsInGroup;
 	}
+
 	public void setPersonsInGroup(int personsInGroup) {
 		this.personsInGroup = personsInGroup;
 	}
+
 	public int getAmountOfGroups() {
 		return amountOfGroups;
 	}
+
 	public void setAmountOfGroups(int amountOfGroups) {
 		this.amountOfGroups = amountOfGroups;
 	}

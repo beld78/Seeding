@@ -4,13 +4,16 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.wb.swt.SWTResourceManager;
 
@@ -20,11 +23,12 @@ public class MainWindow {
 	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 	private StyledText resultListHere;
 	private Button btnFormat;
-	private Text groups;
-	private Text personsInGroup;
 	private Label lblNewLabel;
 	private Logic logic;
 	private Button btnNewButton;
+	private SecondWindow secondWindow;
+	private Spinner groups;
+	private Spinner personsInGroup;
 
 	/**
 	 * Launch the application.
@@ -49,6 +53,7 @@ public class MainWindow {
 		createContents();
 		shlSeedingTool.open();
 		shlSeedingTool.layout();
+
 		while (!shlSeedingTool.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
@@ -61,7 +66,8 @@ public class MainWindow {
 	 */
 	protected void createContents() {
 		shlSeedingTool = new Shell();
-		shlSeedingTool.setSize(371, 287);
+		shlSeedingTool.setMinimumSize(new Point(371, 287));
+		shlSeedingTool.setSize(525, 349);
 		shlSeedingTool.setText("Seeding Tool");
 		shlSeedingTool.setLayout(new GridLayout(4, false));
 
@@ -84,14 +90,12 @@ public class MainWindow {
 
 			private void format(StyledText enterListHere) {
 				String textToConvert = enterListHere.getText();
-				String amountOfGroupsString = groups.getText();
-				String personsInGroupString = personsInGroup.getText();
+				int amountOfGroups = groups.getSelection();
+				int personsInGroupInt = personsInGroup.getSelection();
 
 				String textToConvertArray[] = textToConvert.split("\\r?\\n");
-				int personsInGroup = Integer.parseInt(personsInGroupString);
-				int amountOfGroups = Integer.parseInt(amountOfGroupsString);
 
-				setLogic(textToConvertArray, personsInGroup, amountOfGroups);
+				setLogic(textToConvertArray, personsInGroupInt, amountOfGroups);
 
 				resultListHere.setText(logic.format());
 			}
@@ -127,30 +131,41 @@ public class MainWindow {
 		formToolkit.adapt(lblAmountOfGroups, true, true);
 		lblAmountOfGroups.setText("Amount of Groups");
 
-		groups = new Text(shlSeedingTool, SWT.BORDER);
-		GridData gd_groups = new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1);
-		gd_groups.widthHint = 28;
-		groups.setLayoutData(gd_groups);
-		formToolkit.adapt(groups, true, true);
+		groups = new Spinner(shlSeedingTool, SWT.BORDER);
+		formToolkit.adapt(groups);
+		formToolkit.paintBordersFor(groups);
 
 		lblNewLabel = new Label(shlSeedingTool, SWT.NONE);
 		lblNewLabel.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false, 1, 1));
 		formToolkit.adapt(lblNewLabel, true, true);
 		lblNewLabel.setText("Persons / Group\r\n");
 
-		personsInGroup = new Text(shlSeedingTool, SWT.BORDER);
-		GridData gd_personsInGroup = new GridData(SWT.CENTER, SWT.TOP, false, false, 1, 1);
-		gd_personsInGroup.heightHint = 15;
-		gd_personsInGroup.widthHint = 29;
-		personsInGroup.setLayoutData(gd_personsInGroup);
-		formToolkit.adapt(personsInGroup, true, true);
+		personsInGroup = new Spinner(shlSeedingTool, SWT.BORDER);
+		formToolkit.adapt(personsInGroup);
+		formToolkit.paintBordersFor(personsInGroup);
 
 		btnNewButton = new Button(shlSeedingTool, SWT.NONE);
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				secondWindow = new SecondWindow(logic);
+				secondWindow.start(logic);
+			}
+		});
 		GridData gd_btnNewButton = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		gd_btnNewButton.widthHint = 149;
 		btnNewButton.setLayoutData(gd_btnNewButton);
 		formToolkit.adapt(btnNewButton, true, true);
 		btnNewButton.setText("Adjust groups");
+
+		Menu menu = new Menu(shlSeedingTool, SWT.BAR);
+		shlSeedingTool.setMenuBar(menu);
+
+		MenuItem mntmFormGroups = new MenuItem(menu, SWT.NONE);
+		mntmFormGroups.setText("Form Groups");
+
+		MenuItem mntmEditGroups = new MenuItem(menu, SWT.NONE);
+		mntmEditGroups.setText("Edit Groups");
 
 	}
 }
