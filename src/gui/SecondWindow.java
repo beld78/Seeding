@@ -3,6 +3,7 @@ package gui;
 import java.util.LinkedList;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
@@ -20,6 +21,7 @@ public class SecondWindow {
 	private Logic logic;
 	private LinkedList<Table> tableList = new LinkedList<>();
 	private Button swapButton;
+	private StyledText resultList;
 
 	/**
 	 * Launch the application.
@@ -62,9 +64,9 @@ public class SecondWindow {
 	 */
 	private void createContents() {
 		shell = new Shell();
-		shell.setSize(450, 300);
-		shell.setText("SWT Application");
-		shell.setLayout(new GridLayout(logic.amountOfGroups, true));
+		shell.setSize(650, 300);
+		shell.setText("Adjust groups");
+		shell.setLayout(new GridLayout(logic.amountOfGroups, false));
 		System.out.println(logic.amountOfGroups);
 		for (int i = 1; i <= logic.amountOfGroups; i++) {
 
@@ -73,6 +75,7 @@ public class SecondWindow {
 			GridData groupLabelGrid = new GridData(SWT.FILL, SWT.CENTER, true, true, 1, 1);
 			groupLabel.setLayoutData(groupLabelGrid);
 		}
+
 		for (int i = 1; i <= logic.amountOfGroups; i++) {
 
 			Table table = new Table(shell, SWT.MULTI | SWT.BORDER);
@@ -99,25 +102,55 @@ public class SecondWindow {
 						if (toBeSwappedZero == "") {
 							groupIndices[0] = i;
 							playerIndices[0] = table.getSelectionIndex();
-							toBeSwappedZero = table.getSelection().toString();
+							toBeSwappedZero = table.getSelection()[0].getText();
 						} else {
 							groupIndices[1] = i;
 							playerIndices[1] = table.getSelectionIndex();
-							toBeSwappedOne = table.getSelection().toString();
+							toBeSwappedOne = table.getSelection()[0].getText();
 						}
 					}
 					if (table.getSelectionCount() == 2) {
 						playerIndices = table.getSelectionIndices();
 						groupIndices[0] = i;
 						groupIndices[1] = i;
-						toBeSwappedZero = table.getItem(playerIndices[0]).getData().toString();
-						toBeSwappedOne = table.getItem(playerIndices[1]).getData().toString();
+						toBeSwappedZero = table.getItem(playerIndices[0]).getText();
+						toBeSwappedOne = table.getItem(playerIndices[1]).getText();
 					}
 					i++;
 				}
 				System.out.println(toBeSwappedOne);
 				tableList.get(groupIndices[0]).getItem(playerIndices[0]).setText(toBeSwappedOne);
 				tableList.get(groupIndices[1]).getItem(playerIndices[1]).setText(toBeSwappedZero);
+			}
+		});
+
+		Button finishGroupsButton = new Button(shell, SWT.None);
+		finishGroupsButton.setText("Finish Groups");
+
+		finishGroupsButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				String participants = "";
+				for (Table table : tableList) {
+					TableItem[] tableArray = table.getItems();
+					for (TableItem tableItem : tableArray) {
+						participants += tableItem.getText();
+						participants += "\n";
+					}
+				}
+				resultList.setText(participants);
+			}
+		});
+
+		resultList = new StyledText(shell, SWT.BORDER);
+		GridData resultListGrid = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 3);
+		resultList.setLayoutData(resultListGrid);
+		resultList.setText("Result will be here");
+		resultList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				int end = resultList.getCharCount();
+				resultList.setSelectionRange(0, end);
 			}
 		});
 	}
