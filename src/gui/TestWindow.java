@@ -1,6 +1,7 @@
 package gui;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.TableCursor;
 import org.eclipse.swt.custom.TableTree;
 import org.eclipse.swt.events.DisposeEvent;
@@ -9,10 +10,14 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class TestWindow {
 
@@ -55,7 +60,7 @@ public class TestWindow {
 		shlSwtApplication = new Shell();
 		shlSwtApplication.setSize(450, 300);
 		shlSwtApplication.setText("SWT Application");
-		shlSwtApplication.setLayout(new GridLayout(3, false));
+		shlSwtApplication.setLayout(new GridLayout(6, false));
 
 		TableTree tableTree = new TableTree(shlSwtApplication, SWT.BORDER | SWT.FULL_SELECTION);
 		tableTree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -87,6 +92,19 @@ public class TestWindow {
 		TableItem tableItem_6 = new TableItem(tableTree.getTable(), SWT.NONE);
 		tableItem_6.setText("New TableItem");
 
+		ToolBar toolBar = new ToolBar(shlSwtApplication, SWT.FLAT | SWT.RIGHT);
+
+		ToolItem tltmplk = new ToolItem(toolBar, SWT.DROP_DOWN);
+		tltmplk.setText("\u00FCplk");
+
+		List list = new List(shlSwtApplication, SWT.BORDER);
+
+		CCombo combo = new CCombo(shlSwtApplication, SWT.BORDER);
+		combo.setBackground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
+		combo.setEditable(false);
+		combo.setToolTipText("colors");
+		combo.setText("Colors");
+		combo.add("TEST");
 		Label label = new Label(shlSwtApplication, SWT.SEPARATOR | SWT.VERTICAL);
 
 		table = new Table(shlSwtApplication, SWT.BORDER | SWT.FULL_SELECTION);

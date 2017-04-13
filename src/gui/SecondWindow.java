@@ -3,6 +3,7 @@ package gui;
 import java.util.LinkedList;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -14,6 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class SecondWindow {
 
@@ -22,6 +24,8 @@ public class SecondWindow {
 	private LinkedList<Table> tableList = new LinkedList<>();
 	private Button swapButton;
 	private StyledText resultList;
+	private CCombo colorsCombo;
+	private Label yee;
 
 	/**
 	 * Launch the application.
@@ -153,6 +157,96 @@ public class SecondWindow {
 				resultList.setSelectionRange(0, end);
 			}
 		});
+		colorsCombo = new CCombo(shell, SWT.BORDER);
+		// GridData colorsComboGrid = new GridData(SWT.FILL, SWT.FILL, true,
+		// true, 1, 1);
+		// colorsCombo.setLayoutData(colorsComboGrid);
+		colorsCombo.setEditable(false);
+		colorsCombo.setText("Colors");
+		colorsCombo.add("White");
+		colorsCombo.add("Red");
+		colorsCombo.add("Blue");
+		colorsCombo.add("Yellow");
+		colorsCombo.add("Green");
+		colorsCombo.add("Magenta");
+		colorsCombo.add("Cyan");
+
+		Button colorsButton = new Button(shell, SWT.NONE);
+		// colorsButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+		// true, 1, 1));
+		colorsButton.setText("Set color");
+
+		colorsButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				String colorString = colorsCombo.getText();
+				colorPlayers(colorString);
+			}
+
+			private void colorPlayers(String colorString) {
+				System.out.println(colorString);
+				if (colorString.equals("White")) {
+					for (Table table : tableList) {
+						TableItem[] tableItems = table.getSelection();
+						for (TableItem tableItem : tableItems) {
+							tableItem.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+						}
+					}
+				}
+				if (colorString.equals("Red")) {
+					for (Table table : tableList) {
+						TableItem[] tableItems = table.getSelection();
+						for (TableItem tableItem : tableItems) {
+							tableItem.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
+						}
+					}
+				}
+				if (colorString.equals("Blue")) {
+					for (Table table : tableList) {
+						TableItem[] tableItems = table.getSelection();
+						for (TableItem tableItem : tableItems) {
+							tableItem.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLUE));
+						}
+					}
+				}
+				if (colorString.equals("Yellow")) {
+					for (Table table : tableList) {
+						TableItem[] tableItems = table.getSelection();
+						for (TableItem tableItem : tableItems) {
+							tableItem.setBackground(SWTResourceManager.getColor(SWT.COLOR_YELLOW));
+						}
+					}
+				}
+				if (colorString.equals("Green")) {
+					for (Table table : tableList) {
+						TableItem[] tableItems = table.getSelection();
+						for (TableItem tableItem : tableItems) {
+							tableItem.setBackground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
+						}
+					}
+				}
+				if (colorString.equals("Magenta")) {
+					for (Table table : tableList) {
+						TableItem[] tableItems = table.getSelection();
+						for (TableItem tableItem : tableItems) {
+							tableItem.setBackground(SWTResourceManager.getColor(SWT.COLOR_MAGENTA));
+						}
+					}
+				}
+				if (colorString.equals("Cyan")) {
+					yee.setVisible(true);
+					for (Table table : tableList) {
+						TableItem[] tableItems = table.getSelection();
+						for (TableItem tableItem : tableItems) {
+							tableItem.setBackground(SWTResourceManager.getColor(SWT.COLOR_CYAN));
+						}
+					}
+				}
+			}
+		});
+		yee = new Label(shell, SWT.NONE);
+		yee.setText("YEE");
+		yee.setVisible(false);
 	}
 
 }
